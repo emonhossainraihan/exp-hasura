@@ -8,7 +8,7 @@ type UserProfile {
     displayName: String
 }
 type Query {
-    firebase_user_profile(id: String!): UserProfile
+    firebase_user_profile(id: String): UserProfile
 }
 `;
 
