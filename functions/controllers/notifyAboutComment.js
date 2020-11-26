@@ -15,7 +15,8 @@ query MyQuery($id: uuid!) {
 const notfifyAboutCommentHandler = async (request, response) => {
     try {
         const { event } = request.body;
-        const { photo_id, comment } = event?.data?.new;
+        const { headers } = request
+        const { photo_id, comment } = event && event.data && event.data.new;
         const { session_variables } = event;
 
         // Query for hasura
@@ -25,7 +26,7 @@ const notfifyAboutCommentHandler = async (request, response) => {
                 query: GET_PHOTO_QUERY,
                 variables: { id: photo_id }
             }),
-            headers: { ...session_variables, ...request.headers }
+            headers: Object.assign({}, session_variables, headers) // polyfit for spread operator
         });
 
         const { data: { photos_by_pk: { photo_url, description } } } = await photoInfoQuery.json()

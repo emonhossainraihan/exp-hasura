@@ -17,11 +17,12 @@ const loginHandler = async (
             })
         });
 
-        const { idToken } = await loginRequest.json();
+        const { idToken, localId } = await loginRequest.json();
         console.log(idToken)
         if (!idToken) throw Error('No idToken!')
         response.status(200).send({
-            accessToken: idToken
+            accessToken: idToken,
+            id: localId
         })
     }
     catch (error) {

@@ -1,7 +1,13 @@
 const { logger } = require('firebase-functions');
-const { initializeApp, auth } = require('firebase-admin');
 
-initializeApp();
+const { auth } = require('firebase-admin');
+// var serviceAccount = require("../serviceAccountKey.json");
+// var admin = require("firebase-admin");
+
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount),
+//     databaseURL: "https://exp-hasura.firebaseio.com"
+// });
 
 const createUserHandler = async (
     request,

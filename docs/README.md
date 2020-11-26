@@ -168,3 +168,86 @@ HASURA_GRAPHQL_UNAUTHORIZED_ROLE: <name>
 ```
 
 If you want to add custom authentication use Hasura Web Hook
+
+## Database Migrations & Metadata
+
+create snapshot of our database schema:
+
+```
+hasura migrate create <name> --from-server 
+```
+
+apply migration:
+
+```
+hasura migrate apply --endpoint <URL>
+hasura migrate apply --skip-execution version <id>
+hasura migrate apply --goto <ID>
+hasura migrate apply --version <ID> --type <up|down>
+
+```
+
+create snapshot of our hasura metadata:
+
+```
+hasura metadata export
+```
+
+apply metadata:
+
+```
+hasura metadata apply 
+```
+
+### Firebase deploy errors
+
+firebase.json:
+
+```json
+"predeploy": [
+  "npm --prefix \"%RESOURCE_DIR%\" run lint"
+]
+```
+
+Once you have created a Firebase project, you can initialize the SDK with an authorization strategy that combines your service account file together with Google Application Default Credentials.
+
+To generate a private key file for your service account:
+
+- In the Firebase console, open Settings > Service Accounts.
+- Click Generate New Private Key, then confirm by clicking Generate Key.
+- Securely store the JSON file containing the key.
+
+```js
+var admin = require("firebase-admin");
+
+var serviceAccount = require("path/to/serviceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://exp-hasura.firebaseio.com"
+});
+```
+
+## Keep your migration metadata always Sync
+
+```
+hasura console --console-port <PORT>
+```
+
+But that's will create so many migration to trace our feature hence we can use migration squash:
+
+```
+husura migrate squash --name <NAME> --from <ID>
+```
+
+## Seed migration
+
+We can generate our seed from our current databasae table:
+
+```
+hasura seeds create <NAME> --from-table <TABLE_NAME>
+hasura seeds apply
+```
+
+
+
